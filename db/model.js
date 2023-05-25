@@ -1,48 +1,44 @@
-//if there is an index.js file at this path, it will use it by default.
-//exporting STRING, INTEGER with db from other file so we don't need to require sequelize again
-const { db, STRING, INTEGER } = require("./db.js")
+const { db } = require("./db.js")
+const Sequelize = require("sequelize")
+const { STRING, UUID, UUIDV4, DataTypes } = Sequelize
 
-//define models
-const Person = db.define("Person", {
-  name: {
-    type: STRING,
-    allowNull: false,
-    unique: true,
-    validate: { notEmpty: true },
+const commonAttr = {
+  id: {
+    type: UUID,
+    primaryKey: true,
+    //default value is needed for Sequelize to automatically create the UUID primary key
+    defaultValue: UUIDV4,
   },
-})
-
-const Thing = db.define("Thing", {
-  name: {
-    type: STRING,
-    allowNull: false,
-    unique: true,
-    validate: { notEmpty: true },
-  },
-})
-
-const Place = db.define("Place", {
-  name: {
-    type: STRING,
-    allowNull: false,
-    unique: true,
-    validate: { notEmpty: true },
-  },
-})
-
-const Souvenir = db.define("Souvenir", {})
-
-//define relationships
-Person.hasMany(Souvenir)
-Souvenir.belongsTo(Person)
-Place.hasMany(Souvenir)
-Souvenir.belongsTo(Place)
-Thing.hasMany(Souvenir)
-Souvenir.belongsTo(Thing)
-
-async function dbModelSync() {
-  await db.sync({ force: true })
-  console.log("all models were synchronized successfully.")
 }
 
-module.exports = { db, Person, Thing, Place, Souvenir, dbModelSync } //don't forget to export your models
+const Member = db.define("member", {
+  ...commonAttr,
+  name: STRING(20),
+  sponserId: UUID,
+})
+
+const Facility = db.define("facility", { ...commonAttr, name: STRING(20) })
+
+const Booking = db.define("booking", {
+  ...commonAttr,
+  bookerId: UUID,
+  facilityId: UUID,
+})
+
+Member.belongsTo(Member, { as: "sponser" })
+Member.hasMany(Member, { as: "sponsee", foreignKey: "sponserId" })
+
+Booking.belongsTo(Member, { as: "booker" })
+Member.hasMany(Booking, { foreignKey: "bookerId" })
+
+Booking.belongsTo(Facility)
+Facility.hasMany(Booking)
+
+module.exports = {
+  db,
+  Member,
+  Facility,
+  Booking,
+}
+
+//db.sync({force: true})

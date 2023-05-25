@@ -1,11 +1,4 @@
 //Need to edit this
-const {
-  db,
-  Person,
-  Thing,
-  Place,
-  Souvenir,
-  dbModelSync,
-} = require("./model.js")
+const { db, Member, Facility, Booking } = require("./model.js")
 
-module.exports = { db, Person, Thing, Place, Souvenir, dbModelSync }
+module.exports = { db, Member, Facility, Booking }

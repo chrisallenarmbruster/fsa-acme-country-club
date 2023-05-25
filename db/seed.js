@@ -1,62 +1,62 @@
-const { db, Person, Thing, Place, Souvenir, dbModelSync } = require("./") //don't forget to import the models
+const { db, Member, Facility, Booking } = require("./model.js")
 
-const data = {
-  people: ["moe", "larry", "lucy", "ethyl"],
-  places: ["paris", "nyc", "chicago", "london"],
-  things: ["hat", "bag", "shirt", "cup"],
-  souvenirs: [
-    { person: "moe", thing: "hat", place: "london" },
-    { person: "moe", thing: "bag", place: "paris" },
-    { person: "ethyl", thing: "shirt", place: "nyc" },
-  ],
-}
-
-async function syncAndSeed() {
+const syncAndSeed = async () => {
   try {
-    await dbModelSync()
-    console.log("starting seed process")
-    await Promise.all(
-      data.people.map(async (person) => await Person.create({ name: person }))
-    )
-    await Promise.all(
-      data.places.map(async (place) => await Place.create({ name: place }))
-    )
-    await Promise.all(
-      data.things.map(async (thing) => await Thing.create({ name: thing }))
-    )
-    await Promise.all(
-      data.souvenirs.map(async (souvenir) => {
-        const personId = (
-          await Person.findOne({
-            where: { name: souvenir.person },
-          })
-        ).id
-        const placeId = (
-          await Place.findOne({
-            where: { name: souvenir.place },
-          })
-        ).id
-        const thingId = (
-          await Thing.findOne({
-            where: { name: souvenir.thing },
-          })
-        ).id
-        console.log(personId, placeId, thingId)
+    await db.sync({ force: true })
 
-        await Souvenir.create({
-          PersonId: personId,
-          PlaceId: placeId,
-          ThingId: thingId,
-        })
-      })
-    )
+    const [tennis, pingPong, marbles] = await Promise.all([
+      Facility.create({
+        name: "Tennis",
+      }),
+      Facility.create({
+        name: "Ping Pong",
+      }),
+      Facility.create({
+        name: "Marbles",
+      }),
+    ])
 
-    console.log("seeding complete")
-    db.close()
+    const [lucy] = await Promise.all([
+      Member.create({
+        name: "Lucy",
+      }),
+    ])
+
+    const [moe, larry] = await Promise.all([
+      Member.create({
+        name: "moe",
+        sponserId: lucy.id,
+      }),
+      Member.create({
+        name: "larry",
+        sponserId: lucy.id,
+      }),
+    ])
+
+    const [ethyl] = await Promise.all([
+      Member.create({
+        name: "ethyl",
+        sponserId: moe.id,
+      }),
+    ])
+
+    await Promise.all([
+      Booking.create({
+        bookerId: lucy.id,
+        facilityId: marbles.id,
+      }),
+      Booking.create({
+        bookerId: lucy.id,
+        facilityId: marbles.id,
+      }),
+      Booking.create({
+        bookerId: moe.id,
+        facilityId: tennis.id,
+      }),
+    ])
   } catch (error) {
-    console.error(error)
+    console.log(error)
     db.close()
   }
 }
-
 syncAndSeed()

@@ -1,9 +1,8 @@
 const { Sequelize, STRING, INTEGER } = require("sequelize")
 
-const db = new Sequelize(`postgres://localhost/acme_people_places_things`, {
+const db = new Sequelize(`postgres://localhost/acme-country-club-db`, {
   logging: false,
 })
-
 async function authenticate() {
   try {
     await db.authenticate()
@@ -13,7 +12,5 @@ async function authenticate() {
     db.close()
   }
 }
-
 authenticate()
-
 module.exports = { db, STRING, INTEGER }

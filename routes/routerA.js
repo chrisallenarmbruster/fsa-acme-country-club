@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const { Person, Thing, Place, Souvenir } = require("../db")
+// const { Person, Thing, Place, Souvenir } = require("../db")
 // const { mainView } = require("../views")
 
 router.get("/", async (req, res, next) => {
