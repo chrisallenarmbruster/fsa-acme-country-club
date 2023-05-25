@@ -23,6 +23,7 @@ const Facility = db.define("facility", {
 
 const Booking = db.define("booking", {
   ...commonAttr,
+  // Don't need to define the these FKs, "Through" command does it for you
   // bookerId: UUID,
   // facilityId: UUID,
 })
@@ -47,6 +48,9 @@ Member.hasMany(Member, { as: "sponsee", foreignKey: "sponsorId" })
 // Note I created a db2.js and seed2.js that connect to a
 // separate database so I could experiment with both
 
+// ****************************************************
+// Begin New Code
+
 Member.belongsToMany(Facility, {
   foreignKey: "bookerId",
   through: { model: Booking, as: "booker", unique: false },
@@ -60,6 +64,9 @@ Facility.hasMany(Booking)
 Booking.belongsTo(Facility)
 Booking.belongsTo(Member, { as: "booker" })
 Member.hasMany(Booking, { foreignKey: "bookerId" })
+
+// End New Code
+// **************************************************
 
 module.exports = {
   db,
