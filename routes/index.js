@@ -1,3 +1,4 @@
-const routerA = require("./routerA.js")
+const apiRouter = require("./api.js")
+const api2Router = require("./api2.js")
 
-module.exports = { routerA }
+module.exports = { apiRouter, api2Router }

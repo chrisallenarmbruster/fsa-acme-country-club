@@ -1,8 +1,8 @@
-const { db, Member, Facility, Booking } = require("./model.js")
+const { db, Member, Facility, Booking } = require("./model2.js")
 
 const syncAndSeed = async () => {
   try {
-    console.log("starting database seeding process")
+    console.log("starting database seed process")
     await db.sync({ force: true })
     console.log("inserting records")
     const [tennis, pingPong, marbles] = await Promise.all([
@@ -59,8 +59,8 @@ const syncAndSeed = async () => {
         facilityId: tennis.id,
       }),
     ])
-    db.close()
     console.log("database seeding complete")
+    db.close()
   } catch (error) {
     console.log(error)
     db.close()

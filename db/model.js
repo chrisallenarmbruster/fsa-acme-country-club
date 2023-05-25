@@ -25,8 +25,8 @@ const Booking = db.define("booking", {
   facilityId: UUID,
 })
 
-Member.belongsTo(Member, { as: "sponser" })
-Member.hasMany(Member, { as: "sponsee", foreignKey: "sponserId" })
+Member.belongsTo(Member, { as: "sponsor" })
+Member.hasMany(Member, { as: "sponsee", foreignKey: "sponsorId" })
 
 Booking.belongsTo(Member, { as: "booker" })
 Member.hasMany(Booking, { foreignKey: "bookerId" })
