@@ -21,5 +21,5 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(PORT, () => {
-  console.log(`app listening in port ${PORT}`)
+  console.log(`API listening on port ${PORT}`)
 })

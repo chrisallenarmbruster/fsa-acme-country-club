@@ -69,4 +69,8 @@ router.get("/members", async (req, res, next) => {
   }
 })
 
+console.log(
+  `Router 2: API routes for http://localhost:1337/api2 set up, try /facilities, /bookings and /members`
+)
+
 module.exports = router

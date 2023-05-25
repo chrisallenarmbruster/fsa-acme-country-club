@@ -6,7 +6,9 @@ const db = new Sequelize(`postgres://localhost/acme-country-club-db2`, {
 async function authenticate() {
   try {
     await db.authenticate()
-    console.log(`connection to db has been established successfully`)
+    console.log(
+      `connection to db has been established successfully: acme-country-club-db2`
+    )
   } catch (error) {
     console.error(`unable to connect to db:`, error)
     db.close()
