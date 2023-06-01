@@ -18,6 +18,10 @@ router.get("/suppliers", async (req, res, next) => {
           ],
         },
       ],
+      order: [
+        ["name", "ASC"],
+        [{ model: CatalogItem }, "price", "DESC"],
+      ],
     })
     res.json(suppliers)
   } catch (error) {
@@ -54,7 +58,7 @@ router.get("/parts", async (req, res, next) => {
       attributes: ["name", "id"],
       include: [
         { model: Part, as: "assembly", attributes: ["name", "id"] },
-        { model: Part, as: "component", attributes: ["name", "id"] },
+        { model: Part, as: "components", attributes: ["name", "id"] },
       ],
     })
     res.json(parts)

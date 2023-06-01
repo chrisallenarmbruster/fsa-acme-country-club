@@ -15,12 +15,12 @@ const CatalogItem = db.define("catalog_item", {
   price: DECIMAL(10, 2),
 })
 
-Part.belongsTo(Part, { as: "assembly" })
-Part.hasMany(Part, { as: "component", foreignKey: "assemblyId" })
+Part.belongsTo(Part, { as: "assembly", foreignKey: "assemblyId" })
+Part.hasMany(Part, { as: "components", foreignKey: "assemblyId" })
 Part.hasMany(CatalogItem)
 CatalogItem.belongsTo(Part)
 Supplier.hasMany(CatalogItem, { foreignKey: "makerId" })
-CatalogItem.belongsTo(Supplier, { as: "maker" })
+CatalogItem.belongsTo(Supplier, { as: "maker", foreignKey: "makerId" })
 
 async function sync() {
   try {
