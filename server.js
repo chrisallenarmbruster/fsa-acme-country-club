@@ -1,7 +1,7 @@
 const express = require("express")
 const morgan = require("morgan")
 // const override = require("method-override")
-const { apiRouter, api2Router } = require("./routes")
+const { apiRouter, api2Router, api3Router } = require("./routes")
 
 const app = express()
 app.use(morgan("dev"))
@@ -12,6 +12,7 @@ app.use(express.json())
 
 app.use("/api", apiRouter)
 app.use("/api2", api2Router)
+app.use("/api3", api3Router)
 
 const PORT = 1337
 
